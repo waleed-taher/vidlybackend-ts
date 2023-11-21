@@ -1,18 +1,19 @@
 import { Express, Request, Response } from "express";
-import { createUserHandler } from "./controllers/user.controller";
 import validate from "./middleware/validateResources";
-import { createUserSchema } from "./schema/user.schema";
-import { createGenreHandler, getGenreHandler } from "./controllers/genre.controller";
-import { createGenreSchema } from "./schema/genre.schema";
+import {
+  createGenreHandler,
+  delGenreHandlerByID,
+  getGenreHandler,
+  getGenreHandlerByID,
+  updateGenreHandler,
+} from "./controllers/genre.controller";
+import { createGenreSchema, genreByIdSchema } from "./schema/genre.schema";
 const routes = (app: Express) => {
-  // app.get("/healthcheck", (req: Request, res: Response) => {
-  //   res.sendStatus(200);
-  // });
-
-  // app.post("/users", validate(createUserSchema), createUserHandler);
-
-  app.post('/api/genres',validate(createGenreSchema), createGenreHandler)
-  app.get('/api/genres', getGenreHandler)
+  app.post("/api/genres", validate(createGenreSchema), createGenreHandler);
+  app.get("/api/genres", getGenreHandler);
+  app.get("/api/genres/:id", validate(genreByIdSchema), getGenreHandlerByID);
+  app.delete("/api/genres/:id", validate(genreByIdSchema), delGenreHandlerByID);
+  app.put("/api/genres/:id", validate(createGenreSchema), updateGenreHandler);
 };
 
 export default routes;
